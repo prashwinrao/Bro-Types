@@ -3,6 +3,8 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { fetchQuote, generateCode, startCountdown } from './helpers';
 import { QuoteLengthType, RaceStateType } from './types';
+import path from 'path';
+
 
 const PORT = process.env.PORT || 8080;
 
@@ -186,4 +188,17 @@ io.on('connection', (socket) => {
   socket.on('disconnect', handleRoomDisconnect);
 });
 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../../client/build')));
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../client/build/index.html'));
+  
+});
+
 httpServer.listen(PORT);
+// app.listen(PORT, () => {
+//   console.log(`Server is running on http://localhost:${PORT}`);
+// });

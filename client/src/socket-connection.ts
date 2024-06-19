@@ -1,7 +1,6 @@
 import { io } from 'socket.io-client';
 
-const socket = io(
-  import.meta.env.PROD ? 'https://typing-app.fly.dev' : 'http://localhost:8080'
+const socket = io( process.env.REACT_APP_SERVER_URL || 'https://bro-types.vercel.app/'
 );
 
 export default socket;
